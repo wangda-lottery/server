@@ -2,8 +2,7 @@
 
 namespace frontend\controllers;
 
-use common\models\AuditLog;
-use yii\rest\ActiveController;
+use yii\web\Controller;
 
 /**
  * REST 控制器基类。
@@ -11,7 +10,7 @@ use yii\rest\ActiveController;
  * Class BaseController
  * @package frontend\controllers
  */
-class BaseController extends ActiveController
+class BaseController extends Controller
 {
 	public function behaviors()
 	{
@@ -23,23 +22,5 @@ class BaseController extends ActiveController
 				],
 			],
 		];
-	}
-
-	/**
-	 * 保存审计日志。
-	 *
-	 * @param \yii\base\Action $action
-	 *
-	 * @return bool
-	 *
-	 * @throws \yii\web\BadRequestHttpException
-	 */
-	public function beforeAction($action)
-	{
-		$res = parent::beforeAction($action);
-
-		AuditLog::saveAuditLog();
-
-		return $res;
 	}
 }

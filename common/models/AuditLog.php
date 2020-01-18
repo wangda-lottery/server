@@ -14,8 +14,21 @@ class AuditLog extends ActiveRecord
 	 */
 	public static function saveAuditLog()
 	{
-		$url = \Yii::$app->request->url;
+		$request = \Yii::$app->request;
+		$controller = \Yii::$app->controller;
 
-		AuditLog::
+		if (!$request->isPost) return;
+
+		$log = new AuditLog();
+		$log['id'] = ObjectId::make();
+		$log['module'] = $controller->module->id;
+		$log['controller'] = $controller->id;
+		$log['action'] = $controller->action->id;
+		$log['ip'] = $request->userIP;
+		$log['params'] = json_encode($request->bodyParams, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+		$log['ua'] = $request->userAgent;
+		$log->save();
+
+		return $log['id'];
 	}
 }

@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\AuditLog;
 use yii\filters\auth\CompositeAuth;
 use yii\filters\auth\HttpBasicAuth;
 use yii\filters\auth\HttpBearerAuth;
@@ -16,6 +17,8 @@ use yii\rest\ActiveController;
  */
 class BaseController extends ActiveController
 {
+	protected $auditLogId;
+
 	// 免验证路径白名单
 	protected $pathWhitelist = [
 		'users/login',
@@ -96,5 +99,19 @@ class BaseController extends ActiveController
 			// '*',
 			'http://localhost:8666',
 		];
+	}
+
+	/**
+	 * @param \yii\base\Action $action
+	 * @return bool
+	 * @throws \yii\web\BadRequestHttpException
+	 */
+	public function beforeAction($action)
+	{
+		$res = parent::beforeAction($action);
+
+		$this->auditLogId = AuditLog::saveAuditLog();
+
+		return $res;
 	}
 }
