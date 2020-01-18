@@ -1,0 +1,14 @@
+﻿@media screen and (orientation: portrait) {
+
+}
+@media screen and (orientation: landscape) {
+    /* #innerbox{
+      -webkit-transform: rotate(-90deg);
+         -moz-transform: rotate(-90deg);
+          -ms-transform: rotate(-90deg);
+           -o-transform: rotate(-90deg);
+              transform: rotate(-90deg);
+      width:100vh;
+      height:100vw;
+    } */
+}
