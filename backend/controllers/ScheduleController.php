@@ -47,4 +47,32 @@ class ScheduleController extends BaseController
 			];
 		}
 	}
+
+	/**
+	 * 导出数据。
+	 *
+	 * @return array
+	 */
+	public function actionExport() {
+		try {
+			DataProvider::exportLottery();
+
+			return [
+				'export_lottery'=> 'success'
+			];
+		} catch (\Exception $e) {
+			if ($this->auditLogId) {
+				AuditLog::updateAll([
+					'response' => $e->getMessage()
+				], [
+					'id' => $this->auditLogId
+				]);
+			}
+
+			return [
+				'export_lottery'=> 'failed',
+				'message' => $e->getMessage()
+			];
+		}
+	}
 }

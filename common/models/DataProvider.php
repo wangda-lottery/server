@@ -125,18 +125,19 @@ class DataProvider extends Model
 	{
 		$draws = Draw::find()
 			->where(['exported' => 0])
+			->limit(999)
 			->all();
 		if (count($draws) === 0) throw new ServerErrorHttpException("暂无可导数据");
 
 		// 导出数据至本地
-		$savePath = '/Users/sand/Desktop/';
+		$savePath = './';
 		$fileName = 'sample_' . date('Y-m-d_H:i:s');
 		$fullName = $savePath . $fileName . '.xlsx';
 
 		Excel::export([
 			'savePath' => $savePath,
 			'fileName' => $fileName,
-			// 'format' => 'Xls',
+			'format' => 'Xlsx',
 			'mode' => 'export', //default value as 'export'
 
 			'models' => $draws,
@@ -145,25 +146,25 @@ class DataProvider extends Model
 				[
 					'attribute' => 'amount',
 					'value' => function ($model) {
-						return $model['amount'] / 100;
+						return number_format(($model['amount'] + 1) / 100, 2, '.', '');
 					}
 				],
 				[
 					'attribute' => 'f1',
 					'value' => function ($model) {
-						return 'N';
+						return number_format(($model['amount'] + 1) / 100, 2, '.', '');
 					}
 				],
 				[
-					'attribute' => 'f5',
+					'attribute' => 'f2',
 					'value' => function ($model) {
 						return '红包抽奖';
 					}
 				],
 			],
 			'headers' => [
-				'accountName' => '账号*',
-				'amount' => '存入金额*',
+				'accountName' => '账号',
+				'amount' => '存入金额',
 				'f1' => '综合打码量稽核',
 				'f2' => '存入金额备注',
 			]
@@ -186,7 +187,7 @@ class DataProvider extends Model
 			'Referer' => 'https://d335rs9dgtfmqrb.abackfirst.com/transaction/billQuery',
 		];
 		$payload = [
-			'depositType' => 1,
+			'depositType' => 6,
 			'accountType' => 1,
 		];
 

@@ -23,7 +23,8 @@ class BaseController extends ActiveController
 	protected $pathWhitelist = [
 		'users/login',
 		'users/logout',
-		'schedules/keep_alive'
+		'schedules/keep_alive',
+		'schedules/export_lottery',
 	];
 
 	/**

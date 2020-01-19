@@ -61,6 +61,7 @@ return [
 					'controller' => 'schedule',
 					'extraPatterns' => [
 						'GET keep_alive' => 'keep',
+						'GET export_lottery' => 'export',
 					]
 				],
 				[
