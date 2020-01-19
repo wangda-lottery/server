@@ -130,7 +130,7 @@ class DataProvider extends Model
 		if (count($draws) === 0) throw new ServerErrorHttpException("暂无可导数据");
 
 		// 导出数据至本地
-		$savePath = './';
+		$savePath = './excel/';
 		$fileName = 'sample_' . date('Y-m-d_H:i:s');
 		$fullName = $savePath . $fileName . '.xlsx';
 
