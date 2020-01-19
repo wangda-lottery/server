@@ -47,7 +47,7 @@ class DataProvider extends Model
 			'tradeTypeList' => $tradeTypes,
 			'accountNameSearchType' => 'simple',
 			'bettingCode' => null,
-			'pageNo' => 1,
+			'pageNo' => $page,
 			'pageSize' => 500,
 			'sortType' => 'desc',
 			'accountName' => null,
@@ -217,6 +217,73 @@ class DataProvider extends Model
 			}
 		} else {
 			throw new ServerErrorHttpException("抽奖数据上传失败");
+		}
+	}
+
+	/**
+	 * 保持与包网平台的 cookie 活跃。
+	 *
+	 * @param $startTime
+	 * @param $endTime
+	 *
+	 * @return
+	 *
+	 * @throws ServerErrorHttpException
+	 * @throws \yii\base\InvalidConfigException
+	 * @throws \yii\db\Exception
+	 */
+	public static function keepAlive($startTime, $endTime)
+	{
+		$queryUrl = Param::getParam('3rdTradeQueryUrl');
+		$tradeTypes = Param::getParam('3rdTradeType');
+		$cookies = Param::get3rdCookie();
+
+		$options = [
+			'timeout' => 10,
+			'followLocation' => true,
+			'sslVerifyPeer' => false,
+			'userAgent' => Param::getParam('3rdUserAgent'),
+		];
+		$header = [
+			'sec-fetch-mode' => 'cors',
+			'sec-fetch-site' => 'same-origin',
+			'Origin' => 'https://d335rs9dgtfmqrb.abackfirst.com',
+			'Referer' => 'https://d335rs9dgtfmqrb.abackfirst.com/transaction/billQuery',
+		];
+		$payload = [
+			'startTime' => $startTime,
+			'endTime' => $endTime,
+			'tradeTypeList' => $tradeTypes,
+			'accountNameSearchType' => 'simple',
+			'bettingCode' => null,
+			'pageNo' => 1,
+			'pageSize' => 10,
+			'sortType' => 'desc',
+			'accountName' => null,
+			'page' => 1
+		];
+
+		$httpClient = new Client();
+		$response = $httpClient->createRequest()
+			->setUrl($queryUrl)
+			->setMethod('POST')
+			->setFormat(Client::FORMAT_JSON)
+			->setCookies($cookies)
+			->setHeaders($header)
+			->setOptions($options)
+			->setData($payload)
+			->send();
+
+		if ($response->isOk) {
+			$data = $response->getData();
+			$code = $data['code'];
+			if (in_array($code, ["error", "fail"])) {
+				throw new ServerErrorHttpException("Keep alive 检测失败。包网平台接口返回：" . $data['data']['TCmsg']);
+			}
+
+			return true;
+		} else {
+			throw new ServerErrorHttpException("Keep alive 检测失败");
 		}
 	}
 }

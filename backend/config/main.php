@@ -55,8 +55,14 @@ return [
 			'showScriptName' => false,
 			'rules' => [
 				['class' => 'yii\rest\UrlRule', 'controller' => 'param'],
-				['class' => 'yii\rest\UrlRule', 'controller' => 'report',],
-				['class' => 'yii\rest\UrlRule', 'controller' => 'schedule'],
+				['class' => 'yii\rest\UrlRule', 'controller' => 'report'],
+				[
+					'class' => 'yii\rest\UrlRule',
+					'controller' => 'schedule',
+					'extraPatterns' => [
+						'GET keep_alive' => 'keep',
+					]
+				],
 				[
 					'class' => 'yii\rest\UrlRule',
 					'controller' => 'draw',
