@@ -130,9 +130,9 @@ class DataProvider extends Model
 		if (count($draws) === 0) throw new ServerErrorHttpException("暂无可导数据");
 
 		// 导出数据至本地
-		$savePath = './excel/';
+		$savePath = './excel';
 		$fileName = 'sample_' . date('Y-m-d_H:i:s');
-		$fullName = $savePath . $fileName . '.xlsx';
+		$fullName = static::joinPaths($savePath, $fileName . '.xlsx');
 
 		Excel::export([
 			'savePath' => $savePath,
@@ -286,5 +286,20 @@ class DataProvider extends Model
 		} else {
 			throw new ServerErrorHttpException("Keep alive 检测失败");
 		}
+	}
+
+	private static function joinPaths() {
+		$args = func_get_args();
+		$paths = array();
+		foreach ($args as $arg) {
+			$paths = array_merge($paths, (array)$arg);
+		}
+
+		$paths = array_map(function($p){
+			return trim($p, "/");
+		}, $paths);
+
+		$paths = array_filter($paths);
+		return join('/', $paths);
 	}
 }
