@@ -15,7 +15,7 @@ use yii\web\NotAcceptableHttpException;
  */
 class UserController extends BaseController
 {
-	public $modelClass = 'common\models\user';
+	public $modelClass = 'common\models\User';
 
 	/**
 	 * 重写。自定义index方法，获取用户列表。

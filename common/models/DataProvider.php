@@ -151,24 +151,6 @@ class DataProvider extends Model
 				[
 					'attribute' => 'f1',
 					'value' => function ($model) {
-						return '0.00';
-					}
-				],
-				[
-					'attribute' => 'f2',
-					'value' => function ($model) {
-						return '0.00';
-					}
-				],
-				[
-					'attribute' => 'f3',
-					'value' => function ($model) {
-						return '0.00';
-					}
-				],
-				[
-					'attribute' => 'f4',
-					'value' => function ($model) {
 						return 'N';
 					}
 				],
@@ -178,29 +160,12 @@ class DataProvider extends Model
 						return '红包抽奖';
 					}
 				],
-				[
-					'attribute' => 'f6',
-					'value' => function ($model) {
-						return '红包抽奖';
-					}
-				],
-				[
-					'attribute' => 'f7',
-					'value' => function ($model) {
-						return '红包抽奖';
-					}
-				],
 			],
 			'headers' => [
 				'accountName' => '账号*',
 				'amount' => '存入金额*',
-				'f1' => '普通优惠',
-				'f2' => '其他优惠',
-				'f3' => '综合打码量稽核',
-				'f4' => '常态性稽核*',
-				'f5' => '存入金额备注',
-				'f6' => '普通优惠备注',
-				'f7' => '其他优惠备注',
+				'f1' => '综合打码量稽核',
+				'f2' => '存入金额备注',
 			]
 		]);
 

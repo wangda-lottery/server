@@ -33,7 +33,7 @@ return [
 		],
 		'user' => [
 			'enableSession' => false,
-			'identityClass' => 'common\models\user'
+			'identityClass' => 'common\models\User'
 		],
 		'log' => [
 			'traceLevel' => YII_DEBUG ? 3 : 0,

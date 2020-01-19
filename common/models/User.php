@@ -32,7 +32,7 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 			$fields['lastSessionId'],
 			$fields['allowanceUpdatedAt'],
 			$fields['rateLimit'],
-			$fields['allowance'],
+			$fields['allowance']
 		);
 
 		return $fields;

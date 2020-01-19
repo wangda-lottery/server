@@ -34,8 +34,7 @@ AppAsset::register($this);
       <link rel="stylesheet" rev="stylesheet" href="./css/mobile/global.css" type="text/css"/>
       <link rel="stylesheet" rev="stylesheet" href="./css/mobile/index.css" type="text/css"/>
 	<?php else: ?>
-      <!--meta name="viewport" content="width=device-width,user-scalable=no"-->
-      <meta name="viewport" content="width=640,maximum-scale=4,user-scalable=no">
+      <meta name="viewport" content="width=device-width,user-scalable=no">
 
       <link rel="stylesheet" rev="stylesheet" href="./css/pc/reset.css" type="text/css"/>
       <link rel="stylesheet" rev="stylesheet" href="./css/pc/global.css" type="text/css"/>
