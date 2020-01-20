@@ -39,7 +39,7 @@ class ReportController extends BaseController
 		// 昨日充值
 		$totalTopUpCountYesterday = MemberTopUp::find()
 			->where(['between', 'topUpAt', date('Y-m-d 00:00:00', $yesterday), date('Y-m-d 23:59:59', $yesterday)])
-			->count();
+			->sum('amount');
 
 		// 今日抽奖人次数
 		$drawCountToday = Draw::find()
@@ -58,7 +58,7 @@ class ReportController extends BaseController
 			->sum('amount');
 
 		return [
-			'totalTopUpCountYesterday' => intval($totalTopUpCountYesterday),
+			'totalTopUpCountYesterday' => intval($totalTopUpCountYesterday) / 100,
 			'drawCountToday' => intval($drawCountToday),
 			'drawExportedAmountToday' => intval($drawExportedAmountToday),
 			'drawExportedAmountTotal' => intval($drawExportedAmountTotal),
