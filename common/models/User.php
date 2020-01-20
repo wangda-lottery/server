@@ -7,7 +7,9 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\filters\RateLimitInterface;
+use yii\web\ForbiddenHttpException;
 use yii\web\IdentityInterface;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * User model
@@ -28,11 +30,11 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 		$fields = parent::fields();
 
 		unset(
-			$fields['password'],
-			$fields['lastSessionId'],
-			$fields['allowanceUpdatedAt'],
-			$fields['rateLimit'],
-			$fields['allowance']
+		  $fields['password'],
+		  $fields['lastSessionId'],
+		  $fields['allowanceUpdatedAt'],
+		  $fields['rateLimit'],
+		  $fields['allowance']
 		);
 
 		return $fields;
@@ -59,8 +61,8 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 	public function rules()
 	{
 		return [
-			['status', 'default', 'value' => self::STATUS_INACTIVE],
-			['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
+		  ['status', 'default', 'value' => self::STATUS_INACTIVE],
+		  ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
 		];
 	}
 
@@ -111,7 +113,12 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 	 */
 	public static function findIdentityByAccessToken($token, $type = null)
 	{
-		return static::findOne(['accessToken' => $token]);
+		$user = static::findOne(['accessToken' => $token]);
+		if (!$user) {
+			throw new ForbiddenHttpException('登录已过期，请重新登录');
+		}
+
+		return $user;
 	}
 
 	/**
@@ -138,8 +145,8 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 		}
 
 		return static::findOne([
-			'passwordResetToken' => $token,
-			'status' => self::STATUS_ACTIVE,
+		  'passwordResetToken' => $token,
+		  'status' => self::STATUS_ACTIVE,
 		]);
 	}
 
@@ -152,8 +159,8 @@ class User extends ActiveRecord implements IdentityInterface, RateLimitInterface
 	public static function findByVerificationToken($token)
 	{
 		return static::findOne([
-			'emailVerifyToken' => $token,
-			'status' => self::STATUS_INACTIVE
+		  'emailVerifyToken' => $token,
+		  'status' => self::STATUS_INACTIVE
 		]);
 	}
 
