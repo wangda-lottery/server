@@ -21,7 +21,7 @@ class DrawController extends BaseController
 	{
 		$actions = parent::actions();
 
-		unset($actions['index']);
+		unset($actions['index'], $actions['update']);
 
 		return $actions;
 	}
@@ -54,7 +54,26 @@ class DrawController extends BaseController
 	}
 
 	/**
-	 * 派送抽奖结果至会员账户。
+	 * 手动派送抽奖结果。仅标记内部状态。
+	 *
+	 * @param $id
+	 * @throws \Exception
+	 */
+	public function actionUpdate($id)
+	{
+		try {
+			Draw::updateAll([
+				'exported' => 1
+			], [
+				'id' => $id
+			]);
+		} catch (\Exception $e) {
+			throw $e;
+		}
+	}
+
+	/**
+	 *  自动派送抽奖结果至会员账户。
 	 */
 	public function actionExport()
 	{
