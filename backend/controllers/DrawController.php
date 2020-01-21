@@ -95,7 +95,7 @@ class DrawController extends BaseController
 	public function actionExport()
 	{
 		try {
-			DataProvider::exportLottery();
+			DataProvider::exportLotteryByApi();
 		} catch (\Exception $e) {
 			if ($this->auditLogId) {
 				AuditLog::updateAll([

@@ -9,4 +9,8 @@ use yii\db\ActiveRecord;
  */
 class Draw extends ActiveRecord
 {
+	public function getMemberTopUps()
+	{
+		return $this->hasMany(MemberTopUp::class, ['accountName' => 'accountName']);
+	}
 }

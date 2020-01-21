@@ -55,7 +55,7 @@ class ScheduleController extends BaseController
 	 */
 	public function actionExport() {
 		try {
-			DataProvider::exportLottery();
+			DataProvider::exportLotteryByApi();
 
 			return [
 				'export_lottery'=> 'success'
