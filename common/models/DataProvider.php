@@ -255,6 +255,8 @@ class DataProvider extends Model
 			$memberTopUps = $draw->memberTopUps;
 			if (count($memberTopUps) === 0) continue;
 
+			sleep(5);
+
 			$memberTopUp = $memberTopUps[0];
 			$httpClient = new Client();
 
@@ -278,7 +280,7 @@ class DataProvider extends Model
 				if (in_array($code, ["error", "fail"])) {
 					Draw::updateAll([
 						'exported' => 0,
-						'notes' => "红包派送失败。包网平台接口返回：" . $data['data']['TCmsg']
+						'notes' => "红包派送失败。包网平台接口返回：" . (key_exists('msg', $data) ? $data['msg'] : $data['data']['TCmsg'])
 					], [
 						'id' => $draw['id']
 					]);
@@ -306,7 +308,7 @@ class DataProvider extends Model
 				if (in_array($code, ["error", "fail"])) {
 					Draw::updateAll([
 						'exported' => 0,
-						'notes' => "红包派送失败。包网平台接口返回：" . $data['data']['TCmsg']
+						'notes' => "红包派送失败。包网平台接口返回：" . (key_exists('msg', $data) ? $data['msg'] : $data['data']['TCmsg'])
 					], [
 						'id' => $draw['id']
 					]);
@@ -366,7 +368,7 @@ class DataProvider extends Model
 				if (in_array($code, ["error", "fail"])) {
 					Draw::updateAll([
 						'exported' => 0,
-						'notes' => "红包派送失败。包网平台接口返回：" . $data['data']['TCmsg']
+						'notes' => "红包派送失败。包网平台接口返回：" . (key_exists('msg', $data) ? $data['msg'] : $data['data']['TCmsg'])
 					], [
 						'id' => $draw['id']
 					]);
