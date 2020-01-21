@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\AuditLog;
 use common\models\DataProvider;
 use common\models\Draw;
+use common\models\MemberTopUp;
 use yii\data\ActiveDataProvider;
 
 /**
@@ -30,18 +31,34 @@ class DrawController extends BaseController
 	 * 操作。
 	 */
 	public function actionIndex() {
-		$exported = \Yii::$app->request->getQueryParam('exported');
-		$pageSize = \Yii::$app->request->getQueryParam('per-page');
+		$request = \Yii::$app->request;
+		$accountName = $request->getQueryParam('accountName');
+		$exported = $request->getQueryParam('exported');
+		$page = $request->getQueryParam('page');
+		$perPage = $request->getQueryParam('per-page');
+		$queryTimeStart = $request->getQueryParam('queryTimeStart');
+		$queryTimeEnd = $request->getQueryParam('queryTimeEnd');
 
-		$filter = [];
+		$query = Draw::find();
+		if ($accountName) {
+			$query = $query->where(['accountName' => $accountName]);
+		}
+
 		if (in_array($exported, ['0', '1'])) {
-			$filter['exported'] = $exported;
+			$query = $query->andWhere(['exported' => $exported]);
+		}
+
+		if ($queryTimeStart && $queryTimeEnd) {
+			$query = $query->andWhere([
+				'between', 'createdAt', $queryTimeStart, $queryTimeEnd
+			]);
 		}
 
 		$dataProvider = new ActiveDataProvider([
-			'query' => Draw::find()->where($filter),
+			'query' => $query,
 			'pagination' => [
-				'pageSize' => $pageSize,
+				'page' => $page - 1,
+				'pageSize' => $perPage,
 			],
 			'sort' => [
 				'defaultOrder' => [

@@ -5,6 +5,7 @@ namespace backend\controllers;
 use common\models\AuditLog;
 use common\models\DataProvider;
 use common\models\MemberTopUp;
+use yii\data\ActiveDataProvider;
 
 /**
  * 会员充值记录。
@@ -15,6 +16,56 @@ use common\models\MemberTopUp;
 class MemberTopUpController extends BaseController
 {
 	public $modelClass = 'common\models\MemberTopUp';
+
+	/**
+	 * 覆盖.
+	 *
+	 * @return array
+	 */
+	public function actions()
+	{
+		$actions = parent::actions();
+
+		unset($actions['index']);
+
+		return $actions;
+	}
+
+	/**
+	 * 数据查询。
+	 */
+	public function actionIndex() {
+		$request = \Yii::$app->request;
+		$accountName = $request->getQueryParam('accountName');
+		$page = $request->getQueryParam('page');
+		$perPage = $request->getQueryParam('per-page');
+		$queryTimeStart = $request->getQueryParam('queryTimeStart');
+		$queryTimeEnd = $request->getQueryParam('queryTimeEnd');
+
+		$query = MemberTopUp::find();
+		if ($accountName) {
+			$query = $query->where(['accountName' => $accountName]);
+		}
+
+		if ($queryTimeStart && $queryTimeEnd) {
+			$query = $query->andWhere([
+				'between', 'topUpAt', $queryTimeStart, $queryTimeEnd
+			]);
+		}
+
+		return new ActiveDataProvider([
+			'query' => $query,
+			'pagination' => [
+				'page' => $page - 1,
+				'pageSize' => $perPage,
+			],
+			'sort' => [
+				'defaultOrder' => [
+					'id' => SORT_DESC
+				],
+			]
+		]);
+	}
 
 	/**
 	 * 导入会员数据。
