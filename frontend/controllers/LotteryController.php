@@ -299,10 +299,11 @@ class LotteryController extends Controller
 				<span class=\"w120 cw\">DATE_PLACE_HOLDER</span>
 		</li>
 		<li>
-				<span class=\"w120 huang pl20\"><em class=\"cw\">恭喜 </em>mn*** </span>
-				<span class=\"w190 cw\">  获得 <em class=\"huang\">1.39</em> 元红包大奖       </span>
+				<span class=\"w120 huang pl20\"><em class=\"cw\">恭喜 </em>nn*** </span>
+				<span class=\"w190 cw\">  获得 <em class=\"huang\">101.39</em> 元红包大奖       </span>
 				<span class=\"w120 cw\">DATE_PLACE_HOLDER</span>
 		</li>
+
 		<li>
 				<span class=\"w120 huang pl20\"><em class=\"cw\">恭喜 </em>fd*** </span>
 				<span class=\"w190 cw\">  获得 <em class=\"huang\">5.02</em> 元红包大奖       </span>
