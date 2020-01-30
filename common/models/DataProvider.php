@@ -232,8 +232,7 @@ class DataProvider extends Model
 			->all();
 		if (count($draws) === 0) throw new ServerErrorHttpException("暂无可导数据");
 
-		// 调用上传接口
-		$uploadUrl = Param::getParam('3rdDataUploadUrl');
+		// 准备 cookie、ua 等信息
 		$cookies = Param::get3rdCookie();
 
 		$options = [
@@ -274,8 +273,9 @@ class DataProvider extends Model
 				->setOptions($options)
 				->setData($payload)
 				->send();
+			$data = $response->getData();
+
 			if ($response->isOk) {
-				$data = $response->getData();
 				$code = $data['code'];
 				if (in_array($code, ["error", "fail"])) {
 					Draw::updateAll([
@@ -288,6 +288,8 @@ class DataProvider extends Model
 					continue;
 				}
 			}
+
+			$groupName = $data["data"]["groupName"];
 
 			// checkAdd
 			$payload = [
@@ -343,7 +345,7 @@ class DataProvider extends Model
 				"lowestDraw" => 10,
 				"dmicToken" => null,
 				"cashManOnlineTime" => time() * 1000,
-				"groupName" => "充值会员组",
+				"groupName" => $groupName,
 				"remark" => "",
 				"accountType" => 1,
 				"useStatusStr" => "",
@@ -352,7 +354,7 @@ class DataProvider extends Model
 			];
 
 			$response = $httpClient->createRequest()
-				->setUrl($uploadUrl)
+				->setUrl($uploadUrl = "https://d335rs9dgtfmqrb.abackfirst.com/tools/_ajax/platform/transaction/cashManOnlineDeposit/insert")
 				->setMethod('POST')
 				->setFormat(Client::FORMAT_JSON)
 				->setCookies($cookies)

@@ -99,7 +99,8 @@ class BaseController extends ActiveController
 	{
 		return [
 			// '*',
-			'http://localhost:8666',
+			// 'http://localhost:8666',
+			'http://0.0.0.0:8666',
 		];
 	}
 
